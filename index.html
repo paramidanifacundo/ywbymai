@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="es" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YWBYMAI – Entrenamiento Personalizado</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&amp;family=Jost:wght@300;400;500&amp;display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background-color: #faf6f1;
+      color: #3a2e2e;
+    }
+
+    .app-wrapper {
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, .serif {
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    /* Hero */
+    .hero-section {
+      background: linear-gradient(135deg, #faf0e8 0%, #f9e8ef 60%, #fde8f2 100%);
+      position: relative;
+      overflow: hidden;
+      padding: 80px 24px 64px;
+      text-align: center;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(230,130,160,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero-section::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -40px;
+      width: 260px; height: 260px;
+      background: radial-gradient(circle, rgba(210,170,130,0.12) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .logo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(230,130,160,0.15);
+      border: 1px solid rgba(230,130,160,0.3);
+      border-radius: 100px;
+      padding: 6px 18px;
+      font-family: 'Jost', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #c2607a;
+      margin-bottom: 24px;
+    }
+
+    .hero-title {
+      font-size: clamp(52px, 10vw, 96px);
+      font-weight: 300;
+      letter-spacing: 6px;
+      color: #2e1f22;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .hero-title span {
+      color: #d4717f;
+      font-style: italic;
+    }
+
+    .hero-sub {
+      font-size: clamp(15px, 2vw, 18px);
+      font-weight: 300;
+      color: #7a5a60;
+      letter-spacing: 1.5px;
+      margin-bottom: 40px;
+    }
+
+    .hero-divider {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #d4717f, transparent);
+      margin: 0 auto 48px;
+    }
+
+    /* Badges */
+    .feature-pills {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      background: white;
+      border: 1px solid rgba(212,113,127,0.25);
+      border-radius: 100px;
+      padding: 8px 20px;
+      font-size: 13px;
+      color: #7a5a60;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 12px rgba(212,113,127,0.08);
+    }
+
+    .pill svg { width: 14px; height: 14px; color: #d4717f; }
+
+    /* Form card */
+    .form-section {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 40px 24px 64px;
+    }
+
+    .form-card {
+      background: white;
+      border-radius: 24px;
+      padding: 48px 40px;
+      box-shadow: 0 8px 48px rgba(212,113,127,0.1), 0 2px 12px rgba(0,0,0,0.04);
+      border: 1px solid rgba(212,113,127,0.1);
+    }
+
+    @media (max-width: 480px) {
+      .form-card { padding: 32px 24px; }
+    }
+
+    .section-title {
+      font-size: 32px;
+      font-weight: 300;
+      color: #2e1f22;
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+    }
+
+    .section-sub {
+      font-size: 14px;
+      color: #9a7a80;
+      margin-bottom: 32px;
+      font-weight: 300;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #9a7a80;
+      margin-bottom: 8px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 14px 18px;
+      border: 1.5px solid #edd9de;
+      border-radius: 12px;
+      background: #faf8f6;
+      font-family: 'Jost', sans-serif;
+      font-size: 15px;
+      color: #3a2e2e;
+      outline: none;
+      transition: border-color 0.25s, box-shadow 0.25s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #d4717f;
+      box-shadow: 0 0 0 4px rgba(212,113,127,0.1);
+      background: white;
+    }
+
+    textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+
+    .select-wrapper {
+      position: relative;
+    }
+
+    .select-wrapper::after {
+      content: '';
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid #d4717f;
+    }
+
+    .price-note {
+      background: linear-gradient(135deg, #fdf3f5, #fef8f0);
+      border: 1px solid rgba(212,113,127,0.2);
+      border-radius: 14px;
+      padding: 16px 20px;
+      margin: 28px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .price-note svg { width: 18px; height: 18px; color: #d4717f; flex-shrink: 0; margin-top: 1px; }
+    .price-note p { font-size: 13.5px; color: #7a5060; line-height: 1.5; margin: 0; font-weight: 300; font-style: italic; }
+
+    .btn-whatsapp {
+      width: 100%;
+      padding: 17px 24px;
+      background: linear-gradient(135deg, #d4717f 0%, #c45870 100%);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-family: 'Jost', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+      box-shadow: 0 6px 24px rgba(212,113,127,0.35);
+    }
+
+    .btn-whatsapp:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 32px rgba(212,113,127,0.45);
+    }
+
+    .btn-whatsapp:active { transform: translateY(0); }
+    .btn-whatsapp svg { width: 20px; height: 20px; }
+
+    /* Confirmation overlay */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(42,20,25,0.5);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .confirm-card {
+      background: white;
+      border-radius: 24px;
+      padding: 40px 36px;
+      max-width: 440px;
+      width: 100%;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.2);
+      transform: translateY(20px) scale(0.97);
+      transition: transform 0.3s;
+      text-align: center;
+    }
+
+    .overlay.active .confirm-card {
+      transform: translateY(0) scale(1);
+    }
+
+    .confirm-icon {
+      width: 64px; height: 64px;
+      background: linear-gradient(135deg, #fdf3f5, #fde8f0);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .confirm-icon svg { width: 28px; height: 28px; color: #d4717f; }
+
+    .confirm-title { font-size: 26px; font-weight: 300; color: #2e1f22; margin-bottom: 8px; }
+    .confirm-sub { font-size: 14px; color: #9a7a80; margin-bottom: 24px; font-weight: 300; line-height: 1.6; }
+
+    .confirm-summary {
+      background: #faf8f6;
+      border-radius: 14px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #5a4040;
+    }
+
+    .confirm-summary strong { color: #2e1f22; }
+
+    .confirm-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-cancel {
+      flex: 1;
+      padding: 14px;
+      background: #f5edf0;
+      color: #9a7a80;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-cancel:hover { background: #edd9de; }
+
+    .btn-confirm {
+      flex: 2;
+      padding: 14px;
+      background: linear-gradient(135deg, #d4717f 0%, #c45870 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: opacity 0.2s, transform 0.2s;
+      box-shadow: 0 4px 16px rgba(212,113,127,0.3);
+    }
+
+    .btn-confirm:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-confirm svg { width: 16px; height: 16px; }
+
+    /* Error states */
+    .field-error {
+      font-size: 12px;
+      color: #c45870;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .has-error input, .has-error select {
+      border-color: #c45870;
+    }
+
+    /* Footer */
+    .site-footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+      color: #c4a0a8;
+      letter-spacing: 1px;
+      border-top: 1px solid rgba(212,113,127,0.1);
+    }
+
+    /* Float decoration */
+    .deco-float {
+      position: absolute;
+      opacity: 0.06;
+      pointer-events: none;
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-in {
+      animation: fadeSlideUp 0.7s ease both;
+    }
+
+    .animate-in:nth-child(2) { animation-delay: 0.1s; }
+    .animate-in:nth-child(3) { animation-delay: 0.2s; }
+    .animate-in:nth-child(4) { animation-delay: 0.3s; }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="app-wrapper"><!-- HERO -->
+   <section class="hero-section">
+    <div class="logo-badge animate-in"><i data-lucide="dumbbell"></i> Entrenamiento Personalizado
+    </div>
+    <h1 id="heroTitle" class="hero-title animate-in">YWB<span>YMAI</span></h1>
+    <p id="heroSub" class="hero-sub animate-in">Tu mejor versión comienza ahora</p>
+    <div class="hero-divider animate-in"></div>
+    <div class="feature-pills animate-in">
+     <div class="pill">
+      <i data-lucide="calendar-heart"></i> Turnos online
+     </div>
+     <div class="pill">
+      <i data-lucide="clock"></i> Horarios flexibles
+     </div>
+     <div class="pill">
+      <i data-lucide="sparkles"></i> Entrenamiento personalizado
+     </div>
+    </div>
+   </section><!-- FORM -->
+   <section class="form-section">
+    <div class="form-card">
+     <h2 class="serif section-title">Reservá tu turno</h2>
+     <p class="section-sub">Completá el formulario y te contactamos por WhatsApp</p>
+     <form id="reservaForm" novalidate><!-- Nombre -->
+      <div class="form-group" id="group-nombre"><label for="nombre">Nombre completo *</label> <input type="text" id="nombre" placeholder="Tu nombre y apellido" autocomplete="name">
+       <p class="field-error" id="err-nombre">Por favor ingresá tu nombre.</p>
+      </div><!-- Fecha -->
+      <div class="form-group" id="group-fecha"><label for="fecha">Fecha del turno *</label> <input type="date" id="fecha">
+       <p class="field-error" id="err-fecha">Por favor seleccioná una fecha.</p>
+      </div><!-- Hora -->
+      <div class="form-group" id="group-hora"><label for="hora">Horario *</label>
+       <div class="select-wrapper"><select id="hora"> <option value="">— Seleccioná un horario —</option> <optgroup label="Mañana"> <option value="07:30">07:30 hs</option> <option value="09:00">09:00 hs</option> <option value="09:30">09:30 hs</option> <option value="10:00">10:00 hs</option> <option value="11:00">11:00 hs</option> <option value="12:00">12:00 hs</option> </optgroup> <optgroup label="Tarde"> <option value="17:30">17:30 hs</option> <option value="18:00">18:00 hs</option> <option value="18:30">18:30 hs</option> <option value="19:00">19:00 hs</option> <option value="19:30">19:30 hs</option> </optgroup> </select>
+       </div>
+       <p class="field-error" id="err-hora">Por favor seleccioná un horario.</p>
+      </div><!-- Mensaje -->
+      <div class="form-group"><label for="mensaje">Mensaje adicional <span style="font-weight:300;text-transform:none;letter-spacing:0">(opcional)</span></label> <textarea id="mensaje" placeholder="Contame tu objetivo, alguna lesión, o lo que quieras decirme…"></textarea>
+      </div><!-- Precio -->
+      <div class="price-note"><i data-lucide="info"></i>
+       <p id="priceText">El precio de las sesiones se organiza de manera privada por mensaje.</p>
+      </div><!-- Botón --> <button type="submit" class="btn-whatsapp" id="btnWhatsapp"> <i data-lucide="message-circle"></i> <span id="btnText">Reservar por WhatsApp</span> </button>
+     </form>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="site-footer">
+    <p>© 2025 YWBYMAI · Entrenamiento Personalizado · Todos los derechos reservados</p>
+   </footer>
+  </div><!-- CONFIRMATION OVERLAY -->
+  <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+   <div class="confirm-card">
+    <div class="confirm-icon">
+     <i data-lucide="send"></i>
+    </div>
+    <h3 id="confirmTitle" class="serif confirm-title">Confirmá tu reserva</h3>
+    <p class="confirm-sub">Revisá los datos antes de enviar el mensaje por WhatsApp</p>
+    <div class="confirm-summary" id="confirmSummary"></div>
+    <div class="confirm-actions"><button class="btn-cancel" id="btnCancel">Editar</button> <button class="btn-confirm" id="btnConfirm"> <i data-lucide="external-link"></i> Enviar por WhatsApp </button>
+    </div>
+   </div>
+  </div>
+  <script>
+  lucide.createIcons();
+
+  // Set minimum date to today
+  const fechaInput = document.getElementById('fecha');
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth()+1).padStart(2,'0');
+  const dd = String(today.getDate()).padStart(2,'0');
+  fechaInput.min = `${yyyy}-${mm}-${dd}`;
+
+  // Format date nicely
+  function formatDate(dateStr) {
+    if (!dateStr) return '';
+    const [y,m,d] = dateStr.split('-');
+    const months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    return `${parseInt(d)} de ${months[parseInt(m)-1]} de ${y}`;
+  }
+
+  const form = document.getElementById('reservaForm');
+  const overlay = document.getElementById('overlay');
+  let waUrl = '';
+
+  function showError(groupId, errId, show) {
+    const group = document.getElementById(groupId);
+    const err = document.getElementById(errId);
+    if (show) {
+      group.classList.add('has-error');
+      err.style.display = 'block';
+    } else {
+      group.classList.remove('has-error');
+      err.style.display = 'none';
+    }
+  }
+
+  function validate() {
+    const nombre = document.getElementById('nombre').value.trim();
+    const fecha = document.getElementById('fecha').value;
+    const hora = document.getElementById('hora').value;
+    let valid = true;
+
+    if (!nombre) { showError('group-nombre','err-nombre',true); valid = false; }
+    else showError('group-nombre','err-nombre',false);
+
+    if (!fecha) { showError('group-fecha','err-fecha',true); valid = false; }
+    else showError('group-fecha','err-fecha',false);
+
+    if (!hora) { showError('group-hora','err-hora',true); valid = false; }
+    else showError('group-hora','err-hora',false);
+
+    return valid;
+  }
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (!validate()) return;
+
+    const nombre = document.getElementById('nombre').value.trim();
+    const fecha = document.getElementById('fecha').value;
+    const hora = document.getElementById('hora').value;
+    const mensaje = document.getElementById('mensaje').value.trim();
+
+    const fechaFmt = formatDate(fecha);
+    let summary = `<strong>Nombre:</strong> ${nombre}<br><strong>Fecha:</strong> ${fechaFmt}<br><strong>Hora:</strong> ${hora} hs`;
+    if (mensaje) summary += `<br><strong>Mensaje:</strong> ${mensaje}`;
+
+    document.getElementById('confirmSummary').innerHTML = summary;
+
+    let waMsg = `Hola, quiero reservar un turno 🌸\nNombre: ${nombre}\nFecha: ${fechaFmt}\nHora: ${hora} hs`;
+    if (mensaje) waMsg += `\nMensaje: ${mensaje}`;
+
+    const phone = '5491156330951'; // Replace with actual number
+    waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(waMsg)}`;
+
+    overlay.classList.add('active');
+  });
+
+  document.getElementById('btnCancel').addEventListener('click', function() {
+    overlay.classList.remove('active');
+  });
+
+  document.getElementById('btnConfirm').addEventListener('click', function() {
+    overlay.classList.remove('active');
+    window.open(waUrl, '_blank', 'noopener,noreferrer');
+  });
+
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) overlay.classList.remove('active');
+  });
+
+  // Input animations — remove error on input
+  ['nombre','fecha','hora'].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('change', () => {
+      const groupId = `group-${id}`;
+      const errId = `err-${id}`;
+      if (document.getElementById(el.id).value) {
+        showError(groupId, errId, false);
+      }
+    });
+  });
+
+  // Element SDK
+  const defaultConfig = {
+    hero_title: 'YWBYMAI',
+    hero_subtitle: 'Tu mejor versión comienza ahora',
+    price_text: 'El precio de las sesiones se organiza de manera privada por mensaje.',
+    whatsapp_button_text: 'Reservar por WhatsApp',
+    background_color: '#faf6f1',
+    accent_color: '#d4717f',
+    text_color: '#3a2e2e',
+    surface_color: '#ffffff',
+    muted_color: '#9a7a80'
+  };
+
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => {
+      document.getElementById('heroTitle').innerHTML = (config.hero_title || defaultConfig.hero_title).replace(/YWBY/, 'YWBY').replace(/MAI/, '<span style="color:' + (config.accent_color||defaultConfig.accent_color) + ';font-style:italic">MAI</span>');
+      document.getElementById('heroSub').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+      document.getElementById('priceText').textContent = config.price_text || defaultConfig.price_text;
+      document.getElementById('btnText').textContent = config.whatsapp_button_text || defaultConfig.whatsapp_button_text;
+
+      const bg = config.background_color || defaultConfig.background_color;
+      const accent = config.accent_color || defaultConfig.accent_color;
+      const textC = config.text_color || defaultConfig.text_color;
+      const surface = config.surface_color || defaultConfig.surface_color;
+
+      document.body.style.backgroundColor = bg;
+      document.body.style.color = textC;
+
+      document.querySelectorAll('.form-card').forEach(el => el.style.backgroundColor = surface);
+
+      document.querySelectorAll('.btn-whatsapp, .btn-confirm').forEach(el => {
+        el.style.background = `linear-gradient(135deg, ${accent} 0%, ${shadeColor(accent,-15)} 100%)`;
+      });
+
+      document.querySelectorAll('.logo-badge').forEach(el => {
+        el.style.background = hexToRgba(accent, 0.15);
+        el.style.borderColor = hexToRgba(accent, 0.3);
+        el.style.color = shadeColor(accent, -20);
+      });
+
+      document.querySelectorAll('input:not([type="date"]), select, textarea').forEach(el => {
+        el.style.borderColor = hexToRgba(accent, 0.3);
+      });
+
+      const heroEl = document.querySelector('.hero-section');
+      if (heroEl) heroEl.style.background = `linear-gradient(135deg, ${hexToRgba(bg,1)} 0%, ${hexToRgba(accent,0.12)} 100%)`;
+    },
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        {
+          get: () => config.background_color || defaultConfig.background_color,
+          set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); }
+        },
+        {
+          get: () => config.surface_color || defaultConfig.surface_color,
+          set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); }
+        },
+        {
+          get: () => config.text_color || defaultConfig.text_color,
+          set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); }
+        },
+        {
+          get: () => config.accent_color || defaultConfig.accent_color,
+          set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); }
+        },
+        {
+          get: () => config.muted_color || defaultConfig.muted_color,
+          set: (v) => { config.muted_color = v; window.elementSdk.setConfig({ muted_color: v }); }
+        }
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => config.font_family || 'Jost',
+        set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: undefined
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ['hero_title', config.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+      ['price_text', config.price_text || defaultConfig.price_text],
+      ['whatsapp_button_text', config.whatsapp_button_text || defaultConfig.whatsapp_button_text]
+    ])
+  });
+
+  // Color helpers
+  function hexToRgba(hex, alpha) {
+    const r = parseInt(hex.slice(1,3),16);
+    const g = parseInt(hex.slice(3,5),16);
+    const b = parseInt(hex.slice(5,7),16);
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+
+  function shadeColor(hex, percent) {
+    let r = parseInt(hex.slice(1,3),16);
+    let g = parseInt(hex.slice(3,5),16);
+    let b = parseInt(hex.slice(5,7),16);
+    r = Math.min(255, Math.max(0, r + Math.round(r * percent / 100)));
+    g = Math.min(255, Math.max(0, g + Math.round(g * percent / 100)));
+    b = Math.min(255, Math.max(0, b + Math.round(b * percent / 100)));
+    return `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'00')}`;
+  }
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e539da263d75cf2',t:'MTc3NTAwNDc5NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
