@@ -442,7 +442,7 @@
        <p class="field-error" id="err-fecha">Por favor seleccioná una fecha.</p>
       </div><!-- Hora -->
       <div class="form-group" id="group-hora"><label for="hora">Horario *</label>
-       <div class="select-wrapper"><select id="hora"> <option value="">— Seleccioná un horario —</option> </select>
+       <div class="select-wrapper"><select id="hora"> <option value="">— Seleccioná un horario —</option> <optgroup label="Mañana"> <option value="07:30">07:30 hs</option> <option value="09:00">09:00 hs</option> <option value="09:30">09:30 hs</option> <option value="10:00">10:00 hs</option> <option value="11:00">11:00 hs</option> <option value="12:00">12:00 hs</option> </optgroup> <optgroup label="Tarde"> <option value="17:30">17:30 hs</option> <option value="18:00">18:00 hs</option> <option value="18:30">18:30 hs</option> <option value="19:00">19:00 hs</option> <option value="19:30">19:30 hs</option> </optgroup> </select>
        </div>
        <p class="field-error" id="err-hora">Por favor seleccioná un horario.</p>
       </div><!-- Mensaje -->
@@ -491,6 +491,7 @@
 
   const form = document.getElementById('reservaForm');
   const overlay = document.getElementById('overlay');
+  let waUrl = '';
 
   function showError(groupId, errId, show) {
     const group = document.getElementById(groupId);
@@ -522,124 +523,42 @@
     return valid;
   }
 
-const cuposMaximos = 4;
-let waUrl = '';
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (!validate()) return;
 
-function obtenerReservas() {
-  return JSON.parse(localStorage.getItem("reservas")) || {};
-}
+    const nombre = document.getElementById('nombre').value.trim();
+    const fecha = document.getElementById('fecha').value;
+    const hora = document.getElementById('hora').value;
+    const mensaje = document.getElementById('mensaje').value.trim();
 
-function guardarReservas(reservas) {
-  localStorage.setItem("reservas", JSON.stringify(reservas));
-}
+    const fechaFmt = formatDate(fecha);
+    let summary = `<strong>Nombre:</strong> ${nombre}<br><strong>Fecha:</strong> ${fechaFmt}<br><strong>Hora:</strong> ${hora} hs`;
+    if (mensaje) summary += `<br><strong>Mensaje:</strong> ${mensaje}`;
 
-function actualizarHorarios() {
-  const fecha = document.getElementById("fecha").value;
-  const selectHora = document.getElementById("hora");
+    document.getElementById('confirmSummary').innerHTML = summary;
 
-  if (!fecha) return;
+    let waMsg = `Hola, quiero reservar un turno 🌸\nNombre: ${nombre}\nFecha: ${fechaFmt}\nHora: ${hora} hs`;
+    if (mensaje) waMsg += `\nMensaje: ${mensaje}`;
 
-  const diaSemana = new Date(fecha + "T00:00:00").getDay();
+    const phone = '5491156330951'; // Replace with actual number
+    waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(waMsg)}`;
 
-  let horarios = [];
-
-  // Domingo = 0
-  if (diaSemana === 6) {
-    // Sábado
-    horarios = ["09:00", "09:30", "10:00", "10:30", "11:00"];
-  } else if (diaSemana === 5) {
-    // Viernes
-    horarios = ["07:30", "09:00", "09:30", "17:30", "18:00", "18:30", "19:00"];
-  } else {
-    // Lunes a Jueves
-    horarios = ["07:30", "09:00", "09:30", "10:00", "11:00", "17:30", "18:00", "18:30", "19:00"];
-  }
-
-  const reservas = obtenerReservas();
-
-  selectHora.innerHTML = `<option value="">— Seleccioná un horario —</option>`;
-
-  horarios.forEach(hora => {
-    const clave = `${fecha}_${hora}`;
-    const cantidad = reservas[clave] || 0;
-
-    const option = document.createElement("option");
-    option.value = hora;
-
-    if (cantidad >= cuposMaximos) {
-      option.disabled = true;
-      option.textContent = `${hora} - Sin cupos`;
-    } else {
-      option.textContent = `${hora} hs (${cuposMaximos - cantidad} cupos disponibles)`;
-    }
-
-    selectHora.appendChild(option);
+    overlay.classList.add('active');
   });
-}
 
-document.getElementById("fecha").addEventListener("change", actualizarHorarios);
-
-form.addEventListener('submit', function(e) {
-  e.preventDefault();
-
-  if (!validate()) return;
-
-  const nombre = document.getElementById('nombre').value.trim();
-  const fecha = document.getElementById('fecha').value;
-  const hora = document.getElementById('hora').value;
-  const mensaje = document.getElementById('mensaje').value.trim();
-
-  let reservas = obtenerReservas();
-  const clave = `${fecha}_${hora}`;
-
-  if (!reservas[clave]) {
-    reservas[clave] = 0;
-  }
-
-  if (reservas[clave] >= cuposMaximos) {
-    alert("Ese horario ya no tiene cupos disponibles");
-    actualizarHorarios();
-    return;
-  }
-
-  const fechaFmt = formatDate(fecha);
-
-  let summary = `<strong>Nombre:</strong> ${nombre}<br>
-  <strong>Fecha:</strong> ${fechaFmt}<br>
-  <strong>Hora:</strong> ${hora} hs`;
-
-  if (mensaje) {
-    summary += `<br><strong>Mensaje:</strong> ${mensaje}`;
-  }
-
-  document.getElementById('confirmSummary').innerHTML = summary;
-
-  let waMsg = `Hola, quiero reservar un turno 💪
-
-Nombre: ${nombre}
-Fecha: ${fechaFmt}
-Hora: ${hora} hs`;
-
-  if (mensaje) {
-    waMsg += `\nMensaje: ${mensaje}`;
-  }
-
-  const phone = "5491156330951";
-  waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(waMsg)}`;
-
-  document.getElementById("btnConfirm").onclick = function () {
-    reservas[clave]++;
-    guardarReservas(reservas);
-    actualizarHorarios();
-
+  document.getElementById('btnCancel').addEventListener('click', function() {
     overlay.classList.remove('active');
-    window.open(waUrl, '_blank');
-  };
+  });
 
-  overlay.classList.add('active');
-});
+  document.getElementById('btnConfirm').addEventListener('click', function() {
+    overlay.classList.remove('active');
+    window.open(waUrl, '_blank', 'noopener,noreferrer');
+  });
 
-window.onload = actualizarHorarios;
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) overlay.classList.remove('active');
+  });
 
   // Input animations — remove error on input
   ['nombre','fecha','hora'].forEach(id => {
